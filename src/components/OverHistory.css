@@ -15,7 +15,7 @@
 
 .oh-empty-text {
   color: #3a5e3d;
-  : 'DM Mono', monospace;
+  font-family: 'satoshi', monospace;
   font-size: 13px;
 }
 
