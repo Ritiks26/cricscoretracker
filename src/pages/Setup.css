@@ -1,0 +1,206 @@
+.setup-page {
+  min-height: 100vh;
+  background: #0a0f0d;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.setup-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.setup-badge {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.setup-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #f0ebe0;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.setup-sub {
+  color: #6b7568;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.setup-card {
+  width: 100%;
+  max-width: 560px;
+  background: #111a14;
+  border: 1px solid #1e2b20;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.overs-row {
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #4a5e4d;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.overs-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.overs-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #1e2b20;
+  background: #0d1610;
+  color: #8aab8d;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.15s;
+}
+
+.overs-btn:hover { border-color: #4ade80; color: #4ade80; }
+.overs-btn.active { background: rgba(74,222,128,0.12); border-color: #4ade80; color: #4ade80; }
+
+.overs-custom {
+  width: 70px;
+  padding: 6px 10px;
+  background: #0d1610;
+  border: 1px solid #1e2b20;
+  border-radius: 6px;
+  color: #f0ebe0;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+}
+
+.team-tabs {
+  display: flex;
+  border-bottom: 1px solid #1e2b20;
+  margin-bottom: 1.25rem;
+}
+
+.team-tab {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: #4a5e4d;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.team-tab.active {
+  color: #4ade80;
+  border-bottom-color: #4ade80;
+}
+
+.team-section {}
+
+.team-name-row { margin-bottom: 0.5rem; }
+
+.team-name-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: #0d1610;
+  border: 1px solid #1e2b20;
+  border-radius: 8px;
+  color: #f0ebe0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  outline: none;
+}
+
+.team-name-input:focus { border-color: #4ade80; }
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-num {
+  width: 22px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #3a4e3d;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.player-input {
+  flex: 1;
+  padding: 7px 12px;
+  background: #0a100d;
+  border: 1px solid #161e18;
+  border-radius: 6px;
+  color: #cdd8ce;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.player-input:focus { border-color: #2d4a30; }
+
+.error-box {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #f87171;
+  font-size: 13px;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.start-match-btn {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 14px;
+  background: #1a3d1e;
+  border: 1px solid #4ade80;
+  border-radius: 8px;
+  color: #4ade80;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Mono', monospace;
+}
+
+.start-match-btn:hover { background: #4ade80; color: #0a0f0d; }

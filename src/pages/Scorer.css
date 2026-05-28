@@ -1,0 +1,725 @@
+.scorer-page {
+  min-height: 100vh;
+  /* background: #0a0f0d; */
+  background: #fff;
+  padding-bottom: 80px;
+  font-family: "DM Sans", sans-serif;
+}
+
+/* Score Hero */
+.score-hero {
+  background-color: white;
+  /* background: linear-gradient(135deg, #0d1f10 0%, #111a14 100%); */
+  /* border-bottom: 1px solid #1e2b20; */
+  padding: 16px 16px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.hero-team {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: #000;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: "satoshi", monospace;
+  margin-bottom: 4px;
+}
+
+.hero-score {
+  font-family: "satoshi", serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.hero-wkt {
+  font-size: 32px;
+  color: #000;
+  font-weight: 400;
+}
+
+.hero-meta {
+  font-size: 12px;
+  color: #000;
+  margin-top: 6px;
+  font-family: "satoshi", monospace;
+}
+
+.rrr-tag {
+  color: #000;
+  font-weight: 500;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.target-label {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  background: #dadada;
+  color: #000000;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.inn-badge {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: #000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.undo-btn {
+  background: #000;
+  border: 1px solid #dadada;
+  color: #dadada;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.undo-btn:hover {
+  background: #dadada;
+  color: #000;
+}
+
+/* Progress bar */
+.progress-track {
+  height: 4px;
+  background: #dadada;
+  position: relative;
+  overflow: visible;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #333, #000);
+  transition: width 0.3s ease;
+}
+
+.fow-marker {
+  position: absolute;
+  top: -2px;
+  width: 2px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 1px;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+/* Current over */
+.current-over {
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #000000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.over-label-text {
+  font-size: 10px;
+  color: #000;
+  font-family: "satoshi", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.over-balls {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.ball-dot-item {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "satoshi", monospace;
+  border: 1px solid transparent;
+}
+
+.ball-dot {
+  background: #131f15;
+  color: #3a5e3d;
+  border-color: #1a2b1c;
+}
+.ball-run {
+  background: #1a3520;
+  color: #6ee27a;
+  border-color: #2a4e2e;
+}
+.ball-four {
+  background: #1a2b4a;
+  color: #60a5fa;
+  border-color: #2a3e6e;
+  font-weight: 700;
+}
+.ball-six {
+  background: #2a1a4a;
+  color: #a78bfa;
+  border-color: #3e2a6e;
+  font-weight: 700;
+}
+.ball-wicket {
+  background: #3a1010;
+  color: #f87171;
+  border-color: #5a1a1a;
+  font-weight: 700;
+}
+.ball-extra {
+  background: #3a2a10;
+  color: #fbbf24;
+  border-color: #5a4010;
+}
+.ball-bye {
+  background: #1a2a3a;
+  color: #94a3b8;
+  border-color: #2a3a4a;
+}
+.ball-empty {
+  background: transparent;
+  color: #2a3e2d;
+  border-color: #161e18;
+}
+
+.bowler-tag {
+  font-size: 11px;
+  color: #4a6e4d;
+  font-family: "DM Mono", monospace;
+  margin-left: auto;
+}
+
+/* Crease panel */
+.crease-panel {
+  padding: 10px 16px;
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid #161e18;
+  flex-wrap: wrap;
+}
+
+.crease-batter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.crease-strike-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #000;
+  flex-shrink: 0;
+}
+
+.crease-ns-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #dadada;
+  flex-shrink: 0;
+}
+
+.crease-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #000;
+}
+
+.crease-badge {
+  color: #fbbf24;
+  font-size: 14px;
+}
+
+.crease-stat {
+  font-size: 11px;
+  color: #000;
+  font-family: "satoshi", monospace;
+  margin-top: 1px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #dadada;
+  padding: 0 16px;
+  background: white;
+}
+
+.tab {
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  color: #dadada;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  font-family: "satoshi", sans-serif;
+}
+
+.tab.active {
+  color: #000;
+  border-bottom-color: #000;
+}
+.tab:hover {
+  color: #000;
+}
+
+/* Action panel */
+.action-panel {
+  padding: 14px 16px;
+}
+
+.action-section-label {
+  font-size: 10px;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "satoshi", monospace;
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+
+.action-section-label:first-child {
+  margin-top: 0;
+}
+
+/* Run buttons */
+.run-btns {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.run-btn {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid #000;
+  background: #000;
+  color: #c8d8c9;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: "satoshi", monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.run-btn.r0 {
+  color: #4a6e4d;
+}
+.run-btn.r0:hover {
+  background: #333;
+  border-color: #333;
+}
+.run-btn.r1:hover,
+.run-btn.r2:hover,
+.run-btn.r3:hover,
+.run-btn.r5:hover {
+  background: #333;
+  border-color: #333;
+  color: #fff;
+}
+.run-btn.r4 {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+  font-size: 18px;
+}
+.run-btn.r4:hover {
+  background: #333;
+  border-color: #333;
+  color: #fff;
+}
+.run-btn.r6 {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+  font-size: 18px;
+}
+.run-btn.r6:hover {
+  background: #333;
+  border-color: #333;
+  color: #fff;
+}
+
+/* Extra buttons */
+.extra-btns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.extra-btn {
+  padding: 9px 6px;
+  border-radius: 6px;
+  border: 1px solid;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: "satoshi", monospace;
+}
+
+.extra-btn.wide {
+  border-color: #5a4010;
+  color: #fbbf24;
+}
+.extra-btn.wide:hover {
+  background: #3a2a10;
+}
+.extra-btn.nb {
+  border-color: #5a2a10;
+  color: #fb923c;
+}
+.extra-btn.nb:hover {
+  background: #3a1a10;
+}
+.extra-btn.lb {
+  border-color: #2a3a5a;
+  color: #94a3b8;
+}
+.extra-btn.lb:hover {
+  background: #1a2a3a;
+}
+.extra-btn.bye {
+  border-color: #2a3a4a;
+  color: #64748b;
+}
+.extra-btn.bye:hover {
+  background: #151e28;
+}
+
+/* Special buttons */
+.special-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 8px;
+}
+
+.special-btn {
+  padding: 14px 8px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: "satoshi", monospace;
+}
+
+.special-btn.four {
+  background: #131e30;
+  border-color: #2a4a80;
+  color: #60a5fa;
+}
+.special-btn.four:hover {
+  background: #1a2b4a;
+}
+.special-btn.six {
+  background: #1e1030;
+  border-color: #3e2a6e;
+  color: #a78bfa;
+}
+.special-btn.six:hover {
+  background: #2a1a4a;
+}
+.special-btn.wicket {
+  background: #1e0808;
+  border-color: #5a1a1a;
+  color: #f87171;
+}
+.special-btn.wicket:hover {
+  background: #2a0e0e;
+  transform: scale(1.02);
+}
+
+/* Extras summary */
+.extras-summary {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-top: 1px solid #dadada;
+  padding-top: 12px;
+}
+
+.extras-item {
+  font-size: 12px;
+  color: #fff;
+  font-family: "satoshi", monospace;
+  background: #0d1610;
+  border-radius: 4px;
+  padding: 4px 10px;
+}
+
+.extras-item strong {
+  color: #fff;
+  margin-left: 4px;
+}
+.extras-item.total {
+  color: #8aab8d;
+}
+.extras-item.total strong {
+  color: #f0ebe0;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-family: "satoshi", serif;
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.modal-sub {
+  font-size: 12px;
+  color: #dadada;
+  margin-bottom: 16px;
+  font-family: "DM Mono", monospace;
+}
+
+.dismissal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dismissal-btn {
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid #1e2b20;
+  background: #0d1610;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.12s;
+  text-align: left;
+}
+
+.dismissal-btn:hover {
+  border-color: #f87171;
+  color: #f87171;
+}
+.dismissal-btn.active {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: #f87171;
+  color: #f87171;
+  font-weight: 600;
+}
+
+.modal-field {
+  margin-bottom: 12px;
+}
+
+.modal-field-label {
+  font-size: 11px;
+  color: #fff;
+  font-family: "satoshi", monospace;
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: #0d1610;
+  border: 1px solid #1e2b20;
+  border-radius: 6px;
+  color: #f0ebe0;
+  font-size: 13px;
+  outline: none;
+}
+
+.modal-input:focus {
+  border-color: #fff;
+}
+
+.runs-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.runs-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #1e2b20;
+  background: #0d1610;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: "satoshi", monospace;
+}
+
+.runs-btn.active {
+  background: rgba(74, 222, 128, 0.12);
+  border-color: #fff;
+  color: #fff;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modal-cancel {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid gray;
+  background: transparent;
+  color: gray;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.modal-confirm {
+  flex: 2;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #f87171;
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.player-pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.player-pick-btn {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #1e2b20;
+  background: #0d1610;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.12s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.player-pick-btn:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.player-pick-btn.active {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: #fff;
+  color: #fff;
+}
+
+.bowler-pick-stat {
+  font-size: 11px;
+  color: #fff;
+  font-family: "satoshi", monospace;
+}
+
+.no-players {
+  color: #f87171;
+  font-size: 13px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  border-top: 1px solid #161e18;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reset-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: "satoshi", monospace;
+  transition: all 0.15s;
+}
+
+.reset-btn:hover {
+  border-color: #dadada;
+  color: #dadada;
+}

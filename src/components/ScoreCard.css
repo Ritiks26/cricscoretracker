@@ -1,0 +1,211 @@
+.scorecard {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scorecard-section {
+  background: #0d1610;
+  border: 1px solid #1a2b1c;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sc-team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #111a14;
+  border-bottom: 1px solid #1a2b1c;
+}
+
+.sc-team-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f0e8;
+  letter-spacing: 0.02em;
+}
+
+.sc-team-score {
+  font-family: "satoshi", monospace;
+  font-size: 13px;
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.sc-team-sub {
+  font-size: 11px;
+  color: #3a5e3d;
+  font-family: "satoshi", monospace;
+  text-transform: uppercase;
+}
+
+.sc-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sc-th {
+  padding: 6px 10px;
+  font-size: 10px;
+  color: #3a5e3d;
+  font-family: "satoshi", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: right;
+  border-bottom: 1px solid #1a2b1c;
+  background: #0a100d;
+}
+
+.sc-th.name-col {
+  text-align: left;
+}
+
+.sc-td {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #8aab8d;
+  text-align: right;
+  border-bottom: 1px solid #111a14;
+  font-family: "satoshi", monospace;
+}
+
+.sc-td.name-col {
+  text-align: left;
+}
+.sc-td.bold {
+  color: #c8d8c9;
+  font-weight: 600;
+}
+
+.sc-row:last-child .sc-td {
+  border-bottom: none;
+}
+
+.sc-row.batting {
+  background: rgba(251, 191, 36, 0.03);
+}
+.sc-row.out {
+  opacity: 0.7;
+}
+.sc-row.current-bowler {
+  background: rgba(96, 165, 250, 0.04);
+}
+
+.sc-batter-name {
+  font-size: 13px;
+  color: #c8d8c9;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.striker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fbbf24;
+  flex-shrink: 0;
+}
+
+.bowl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #60a5fa;
+  flex-shrink: 0;
+}
+
+.sc-dismissal {
+  font-size: 10px;
+  color: #3a5e3d;
+  font-family: "satoshi", monospace;
+  margin-top: 2px;
+}
+
+.sc-extras-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-top: 1px solid #1a2b1c;
+  font-size: 12px;
+  color: #4a6e4d;
+  font-family: "satoshi", monospace;
+  gap: 8px;
+}
+
+.sc-extras-detail {
+  flex: 1;
+  font-size: 11px;
+  color: #2a4a2e;
+}
+
+.sc-extras-val {
+  font-weight: 600;
+  color: #8aab8d;
+}
+
+.sc-fow {
+  border-top: 1px solid #1a2b1c;
+  padding: 8px 14px;
+}
+
+.sc-fow-label {
+  font-size: 10px;
+  color: #3a5e3d;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: "satoshi", monospace;
+  margin-bottom: 6px;
+}
+
+.sc-fow-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sc-fow-item {
+  font-size: 11px;
+  color: #4a6e4d;
+  font-family: "satoshi", monospace;
+  background: #111a14;
+  border: 1px solid #1a2b1c;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+/* Partnership */
+.partnership-row {
+  display: flex;
+  padding: 14px;
+  gap: 0;
+}
+
+.partnership-stat {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid #1a2b1c;
+}
+
+.partnership-stat:last-child {
+  border-right: none;
+}
+
+.pstat-val {
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  color: #c8d8c9;
+  font-weight: 700;
+}
+
+.pstat-label {
+  font-size: 10px;
+  color: #3a5e3d;
+  font-family: "satoshi", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}

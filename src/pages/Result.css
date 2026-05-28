@@ -1,0 +1,181 @@
+.result-page {
+  min-height: 100vh;
+  background: #0a0f0d;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.result-header {
+  text-align: center;
+  width: 100%;
+  max-width: 560px;
+}
+
+.result-title {
+  font-family: "satoshi", serif;
+  font-size: 1.8rem;
+  color: #f0ebe0;
+  margin: 0.5rem 0 0;
+}
+
+.result-score-big {
+  font-family: "satoshi", serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 0.25rem 0;
+}
+
+.result-meta {
+  font-family: "satoshi", monospace;
+  font-size: 13px;
+  color: #4a6e4d;
+}
+
+.target-announce {
+  margin-top: 1rem;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 15px;
+  color: #a3d4a7;
+}
+
+.target-announce strong {
+  color: #fbbf24;
+  font-size: 18px;
+}
+
+.result-winner {
+  font-family: "satoshi", serif;
+  font-size: 1.6rem;
+  color: #4ade80;
+  margin: 0.75rem 0;
+  font-weight: 700;
+}
+
+.scores-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 1rem;
+}
+
+.final-score-block {
+  text-align: center;
+}
+
+.fsc-team {
+  font-size: 12px;
+  color: #4a6e4d;
+  font-family: "satoshi", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.fsc-score {
+  font-family: "satoshi", serif;
+  font-size: 2rem;
+  color: #c8d8c9;
+  font-weight: 700;
+}
+
+.fsc-ov {
+  font-size: 11px;
+  color: #3a5e3d;
+  font-family: "satoshi", monospace;
+  margin-top: 2px;
+}
+
+.vs-divider {
+  font-size: 12px;
+  color: #2a4a2e;
+  font-family: "satoshi", monospace;
+}
+
+.result-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.inn-summary-card {
+  background: #111a14;
+  border: 1px solid #1e2b20;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.inn-sum-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #0d1610;
+  border-bottom: 1px solid #1a2b1c;
+}
+
+.inn-sum-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c8d8c9;
+}
+
+.inn-sum-score {
+  font-family: "satoshi", monospace;
+  font-size: 13px;
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.inn-sum-extras {
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #4a6e4d;
+  font-family: "satoshi", monospace;
+  border-bottom: 1px solid #111a14;
+}
+
+.inn-sum-fow {
+  padding: 8px 14px;
+}
+
+.inn-sum-fow-label {
+  font-size: 10px;
+  color: #3a5e3d;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: "satoshi", monospace;
+  margin-bottom: 6px;
+}
+
+.fow-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fow-chip {
+  font-family: "satoshi", monospace;
+  font-size: 11px;
+  color: #8aab8d;
+  background: #0d1610;
+  border: 1px solid #1a2b1c;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.result-actions {
+  width: 100%;
+  max-width: 560px;
+}

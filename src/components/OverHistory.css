@@ -1,0 +1,178 @@
+.oh-page {
+  padding: 12px 16px;
+}
+
+.oh-empty {
+  padding: 60px 16px;
+  text-align: center;
+}
+
+.oh-empty-icon {
+  font-size: 32px;
+  color: #2a4a2e;
+  margin-bottom: 12px;
+}
+
+.oh-empty-text {
+  color: #3a5e3d;
+  : 'DM Mono', monospace;
+  font-size: 13px;
+}
+
+.oh-summary-strip {
+  display: flex;
+  gap: 0;
+  background: #0d1610;
+  border: 1px solid #1a2b1c;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.oh-sum-item {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  border-right: 1px solid #1a2b1c;
+}
+
+.oh-sum-item:last-child { border-right: none; }
+
+.oh-sum-val {
+  display: block;
+  : 'Playfair Display', serif;
+  font-size: 22px;
+  color: #c8d8c9;
+  font-weight: 700;
+}
+
+.oh-sum-label {
+  display: block;
+  font-size: 10px;
+  color: #3a5e3d;
+  : 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+/* Bar chart */
+.oh-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 80px;
+  margin-bottom: 14px;
+  padding: 0 2px;
+  background: #0a100d;
+  border: 1px solid #161e18;
+  border-radius: 6px;
+  padding: 8px 8px 0;
+  overflow-x: auto;
+}
+
+.oh-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 22px;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.oh-bar-val {
+  font-size: 9px;
+  color: #3a5e3d;
+  : 'DM Mono', monospace;
+  margin-bottom: 2px;
+}
+
+.oh-bar-track {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.oh-bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, #4ade80, #1a5e24);
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+  transition: height 0.3s;
+}
+
+.oh-bar-fill.wicket {
+  background: linear-gradient(180deg, #f87171, #5a1010);
+}
+
+.oh-bar-label {
+  font-size: 8px;
+  color: #2a4a2e;
+  : 'DM Mono', monospace;
+  padding: 3px 0;
+}
+
+/* Per over list */
+.oh-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.oh-row {
+  background: #0d1610;
+  border: 1px solid #1a2b1c;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.oh-row-header {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-bottom: 1px solid #111a14;
+  gap: 10px;
+}
+
+.oh-over-num {
+  : 'DM Mono', monospace;
+  font-size: 11px;
+  color: #3a5e3d;
+  min-width: 36px;
+}
+
+.oh-bowler-name {
+  font-size: 12px;
+  color: #8aab8d;
+  flex: 1;
+}
+
+.oh-over-runs {
+  : 'DM Mono', monospace;
+  font-size: 12px;
+  color: #c8d8c9;
+  font-weight: 600;
+}
+
+.oh-balls-row {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+}
+
+.ohball {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  : 'DM Mono', monospace;
+  border: 1px solid transparent;
+}

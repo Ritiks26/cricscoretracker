@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: #0a0f0d;
+  color: #c8d8c9;
+  font-family: "satoshi", sans-serif;
+  -webkit-font-smoothing: "satoshi";
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: "satoshi";
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0f0d;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2b20;
+  border-radius: 4px;
+}
+
+.setup-badge {
+  display: inline-block;
+  font-family: "satoshi", monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.setup-title {
+  font-family: "satoshi", serif;
+  font-size: 2.5rem;
+  color: #f0ebe0;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.setup-sub {
+  color: #6b7568;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.field-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #4a5e4d;
+  text-transform: uppercase;
+  font-family: "satoshi", monospace;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.start-match-btn {
+  width: 100%;
+  padding: 14px;
+  background: #1a3d1e;
+  border: 1px solid #4ade80;
+  border-radius: 8px;
+  color: #4ade80;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: "satoshi", monospace;
+  display: block;
+}
+
+.start-match-btn:hover {
+  background: #4ade80;
+  color: #0a0f0d;
+}
+
+.reset-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #2a1a1a;
+  background: transparent;
+  color: #5a3a3a;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: "satoshi", monospace;
+  transition: all 0.15s;
+}
+
+.reset-btn:hover {
+  border-color: #f87171;
+  color: #f87171;
+}
