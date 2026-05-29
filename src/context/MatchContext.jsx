@@ -100,7 +100,7 @@ function applyDelivery(innings, ball) {
   } // odd runs => swap strike (except wide)
 
   if (ball.type !== "wide" && !ball.wicket) {
-    if (ball.runs % 2 === 1) {
+    if (ball.runs % 2 === 1 && s.nonStriker !== null) {
       [s.striker, s.nonStriker] = [s.nonStriker, s.striker];
     }
   }
@@ -124,7 +124,9 @@ function applyDelivery(innings, ball) {
       bowlerId: bowler?.id || "",
     });
     s.currentOverBalls = []; // end of over: swap strike
-    if (!ball.wicket) [s.striker, s.nonStriker] = [s.nonStriker, s.striker];
+    if (!ball.wicket && s.nonStriker !== null) {
+      [s.striker, s.nonStriker] = [s.nonStriker, s.striker];
+    }
     s.currentBowler = null;
     return { innings: s, overEnded: true };
   }
@@ -209,6 +211,7 @@ function reducer(state, action) {
         updatedInnings.status = "complete";
         phase = state.activeInnings === 0 ? "innings_break" : "result";
       } else if (action.ball.wicket && !updatedInnings.striker) {
+        // AFTER — nonStriker bhi hai toh last player akela khelega, all out tab hi jab woh bhi out ho
         const dismissed = (updatedInnings.dismissedBatters || []).map(
           (p) => p.id,
         );
@@ -216,9 +219,18 @@ function reducer(state, action) {
         const remaining = state.teams[
           updatedInnings._battingTeamIdx
         ].players.filter((p) => !dismissed.includes(p.id) && p.id !== nsId);
+
+        // Agar nonStriker hai aur koi new batter nahi → last pair, let last batter play alone
+        // Agar nonStriker bhi nahi → truly all out
         if (remaining.length > 0) {
           phase = "wicket_new_batter";
+        } else if (updatedInnings.nonStriker !== null) {
+          // Last batter akela khelega — nonStriker ko striker banao, nonStriker = null
+          updatedInnings.striker = updatedInnings.nonStriker;
+          updatedInnings.nonStriker = null;
+          phase = "live";
         } else {
+          // Dono out — all out
           updatedInnings.status = "complete";
           phase = state.activeInnings === 0 ? "innings_break" : "result";
         }
