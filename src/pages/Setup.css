@@ -1,6 +1,6 @@
 .setup-page {
   min-height: 100vh;
-  background: #0a0f0d;
+  background: #000;
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
@@ -14,19 +14,19 @@
 
 .setup-badge {
   display: inline-block;
-  font-family: 'DM Mono', monospace;
+  font-family: "satoshi", monospace;
   font-size: 11px;
   letter-spacing: 0.15em;
-  color: #4ade80;
+  color: #fff;
   background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.3);
+  border: 1px solid rgb(138, 138, 138);
   padding: 4px 12px;
   border-radius: 2px;
   margin-bottom: 1rem;
 }
 
 .setup-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "satoshi", serif;
   font-size: 2.5rem;
   color: #f0ebe0;
   font-weight: 700;
@@ -43,7 +43,7 @@
 .setup-card {
   width: 100%;
   max-width: 560px;
-  background: #111a14;
+  background: #000;
   border: 1px solid #1e2b20;
   border-radius: 12px;
   padding: 1.5rem;
@@ -58,7 +58,7 @@
   letter-spacing: 0.08em;
   color: #4a5e4d;
   text-transform: uppercase;
-  font-family: 'DM Mono', monospace;
+  font-family: "satoshi", monospace;
   margin-bottom: 8px;
   display: block;
 }
@@ -74,16 +74,23 @@
   padding: 6px 14px;
   border-radius: 6px;
   border: 1px solid #1e2b20;
-  background: #0d1610;
+  background: #000;
   color: #8aab8d;
   font-size: 13px;
   cursor: pointer;
-  font-family: 'DM Mono', monospace;
+  font-family: "satoshi", monospace;
   transition: all 0.15s;
 }
 
-.overs-btn:hover { border-color: #4ade80; color: #4ade80; }
-.overs-btn.active { background: rgba(74,222,128,0.12); border-color: #4ade80; color: #4ade80; }
+.overs-btn:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.overs-btn.active {
+  background: rgba(74, 222, 128, 0.12);
+  border-color: #fff;
+  color: #fff;
+}
 
 .overs-custom {
   width: 70px;
@@ -92,7 +99,7 @@
   border: 1px solid #1e2b20;
   border-radius: 6px;
   color: #f0ebe0;
-  font-family: 'DM Mono', monospace;
+  font-family: "satoshi", monospace;
   font-size: 13px;
 }
 
@@ -116,13 +123,13 @@
 }
 
 .team-tab.active {
-  color: #4ade80;
-  border-bottom-color: #4ade80;
+  color: #fff;
+  border-bottom-color: #fff;
 }
 
-.team-section {}
-
-.team-name-row { margin-bottom: 0.5rem; }
+.team-name-row {
+  margin-bottom: 0.5rem;
+}
 
 .team-name-input {
   width: 100%;
@@ -137,7 +144,9 @@
   outline: none;
 }
 
-.team-name-input:focus { border-color: #4ade80; }
+.team-name-input:focus {
+  border-color: #fff;
+}
 
 .player-list {
   display: flex;
@@ -155,9 +164,9 @@
 
 .player-num {
   width: 22px;
-  font-family: 'DM Mono', monospace;
+  font-family: "satoshi", monospace;
   font-size: 11px;
-  color: #3a4e3d;
+  color: #fff;
   text-align: right;
   flex-shrink: 0;
 }
@@ -168,13 +177,15 @@
   background: #0a100d;
   border: 1px solid #161e18;
   border-radius: 6px;
-  color: #cdd8ce;
+  color: #fff;
   font-size: 13px;
   outline: none;
   transition: border-color 0.15s;
 }
 
-.player-input:focus { border-color: #2d4a30; }
+.player-input:focus {
+  border-color: #2d4a30;
+}
 
 .error-box {
   background: rgba(239, 68, 68, 0.1);
@@ -191,16 +202,19 @@
   width: 100%;
   margin-top: 1.5rem;
   padding: 14px;
-  background: #1a3d1e;
-  border: 1px solid #4ade80;
+  background: #000000;
+  border: 1px solid #fff;
   border-radius: 8px;
-  color: #4ade80;
+  color: #fff;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.04em;
   cursor: pointer;
   transition: all 0.15s;
-  font-family: 'DM Mono', monospace;
+  font-family: "DM Mono", monospace;
 }
 
-.start-match-btn:hover { background: #4ade80; color: #0a0f0d; }
+.start-match-btn:hover {
+  background: #fff;
+  color: #000;
+}

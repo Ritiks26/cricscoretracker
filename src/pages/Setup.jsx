@@ -4,30 +4,30 @@ import { createPlayer, createTeam } from "../utils/cricket";
 import "./Setup.css";
 
 const DEFAULT_TEAM1 = [
-  "Rohit Sharma",
-  "Shubman Gill",
-  "Virat Kohli",
-  "Shreyas Iyer",
-  "KL Rahul",
-  "Hardik Pandya",
-  "Ravindra Jadeja",
-  "Axar Patel",
-  "Jasprit Bumrah",
-  "Mohammed Siraj",
-  "Kuldeep Yadav",
+  // "Rohit Sharma",
+  // "Shubman Gill",
+  // "Virat Kohli",
+  // "Shreyas Iyer",
+  // "KL Rahul",
+  // "Hardik Pandya",
+  // "Ravindra Jadeja",
+  // "Axar Patel",
+  // "Jasprit Bumrah",
+  // "Mohammed Siraj",
+  // "Kuldeep Yadav",
 ];
 const DEFAULT_TEAM2 = [
-  "David Warner",
-  "Travis Head",
-  "Steve Smith",
-  "Marnus Labuschagne",
-  "Glenn Maxwell",
-  "Mitchell Marsh",
-  "Alex Carey",
-  "Pat Cummins",
-  "Mitchell Starc",
-  "Josh Hazlewood",
-  "Adam Zampa",
+  // "David Warner",
+  // "Travis Head",
+  // "Steve Smith",
+  // "Marnus Labuschagne",
+  // "Glenn Maxwell",
+  // "Mitchell Marsh",
+  // "Alex Carey",
+  // "Pat Cummins",
+  // "Mitchell Starc",
+  // "Josh Hazlewood",
+  // "Adam Zampa",
 ];
 
 function PlayerInput({ players, onChange, count }) {
@@ -58,8 +58,8 @@ function PlayerInput({ players, onChange, count }) {
 
 export default function Setup() {
   const { setTeams } = useMatch();
-  const [team1Name, setTeam1Name] = useState("India");
-  const [team2Name, setTeam2Name] = useState("Australia");
+  const [team1Name, setTeam1Name] = useState("TEAM THUNDER");
+  const [team2Name, setTeam2Name] = useState("TEAM CRUSHER");
   const [team1Players, setTeam1Players] = useState([...DEFAULT_TEAM1]);
   const [team2Players, setTeam2Players] = useState([...DEFAULT_TEAM2]);
   const [totalOvers, setTotalOvers] = useState(20);

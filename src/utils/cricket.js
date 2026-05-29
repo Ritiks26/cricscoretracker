@@ -120,16 +120,3 @@ export function getBallLabel(ball) {
 export function isLegalDelivery(ball) {
   return ball.type !== "wide" && ball.type !== "noBall";
 }
-
-export function isLastManStanding(innings) {
-  const battingTeamPlayers = innings.dismissedBatters?.length
-    ? innings.dismissedBatters.length + 1
-    : innings.wickets + 1;
-
-  const totalPlayers = innings._usedBatters?.length
-    ? innings._usedBatters.length +
-      (innings.wickets < innings._usedBatters.length ? 1 : 0)
-    : 11;
-
-  return innings.wickets === totalPlayers - 1;
-}
