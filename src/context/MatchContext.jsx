@@ -32,16 +32,14 @@ function applyDelivery(innings, ball) {
   if (isLegal) s.balls++;
   s.currentPartnership.runs += ball.runs;
   if (isLegal) s.currentPartnership.balls++;
-  s.isNoBallActive = ball.type === "noBall";
+  s.isNoBallActive = ball.type === "noBall"; // extras
 
-  // extras
   if (ball.type === "wide") s.extras.wides += ball.runs;
   else if (ball.type === "noBall") {
     s.extras.noBalls += 1;
   } else if (ball.type === "legBye") s.extras.legByes += ball.runs;
-  else if (ball.type === "bye") s.extras.byes += ball.runs;
+  else if (ball.type === "bye") s.extras.byes += ball.runs; // update striker
 
-  // update striker
   if (ball.type !== "wide") {
     const batter = s.striker;
     if (batter) {
@@ -53,9 +51,8 @@ function applyDelivery(innings, ball) {
       }
       if (isLegal) batter.batting.balls++;
     }
-  }
+  } // update bowler
 
-  // update bowler
   const bowler = s.currentBowler;
   if (bowler) {
     if (ball.type !== "legBye" && ball.type !== "bye")
@@ -63,9 +60,8 @@ function applyDelivery(innings, ball) {
     if (ball.type === "wide") bowler.bowling.wides++;
     if (ball.type === "noBall") bowler.bowling.noBalls++;
     if (isLegal) bowler.bowling.balls++;
-  }
+  } // wicket handling
 
-  // wicket handling
   if (ball.wicket) {
     s.wickets++;
     if (s.striker) {
@@ -81,8 +77,7 @@ function applyDelivery(innings, ball) {
       )
     ) {
       bowler.bowling.wickets++;
-    }
-    // fielding stats
+    } // fielding stats
     if (ball.wicket.fielderRef) {
       if (ball.wicket.type === "Caught")
         ball.wicket.fielderRef.fielding.catches++;
@@ -102,18 +97,16 @@ function applyDelivery(innings, ball) {
     if (!s.dismissedBatters) s.dismissedBatters = [];
     s.dismissedBatters.push({ ...s.striker }); // dismissed batter ko save karo
     s.striker = null;
-  }
+  } // odd runs => swap strike (except wide)
 
-  // odd runs => swap strike (except wide)
   if (ball.type !== "wide" && !ball.wicket) {
     if (ball.runs % 2 === 1) {
       [s.striker, s.nonStriker] = [s.nonStriker, s.striker];
     }
   }
 
-  s.currentOverBalls.push(ball);
+  s.currentOverBalls.push(ball); // check end of over (6 legal deliveries)
 
-  // check end of over (6 legal deliveries)
   const legalInOver = s.currentOverBalls.filter((b) =>
     isLegalDelivery(b),
   ).length;
@@ -130,8 +123,7 @@ function applyDelivery(innings, ball) {
       bowler: bowler?.name || "",
       bowlerId: bowler?.id || "",
     });
-    s.currentOverBalls = [];
-    // end of over: swap strike
+    s.currentOverBalls = []; // end of over: swap strike
     if (!ball.wicket) [s.striker, s.nonStriker] = [s.nonStriker, s.striker];
     s.currentBowler = null;
     return { innings: s, overEnded: true };
@@ -151,8 +143,7 @@ function reducer(state, action) {
       };
 
     case "SET_TOSS": {
-      const { winner, choice } = action;
-      // batting team index
+      const { winner, choice } = action; // batting team index
       let battingIdx = winner;
       if (choice === "field") battingIdx = winner === 0 ? 1 : 0;
       const bowlingIdx = battingIdx === 0 ? 1 : 0;
@@ -160,8 +151,7 @@ function reducer(state, action) {
         ...state,
         toss: { winner, choice, battingIdx, bowlingIdx },
         phase: "select_openers",
-      };
-      // init first innings structure
+      }; // init first innings structure
       newState.innings = [null, null];
       newState.innings[0] = createInningsState(
         state.teams[battingIdx].name,
@@ -186,8 +176,7 @@ function reducer(state, action) {
       );
       inn.currentBowler = deepClone(
         bowlingTeam.players.find((p) => p.id === bowlerId),
-      );
-      // mark used
+      ); // mark used
       inn._usedBatters = [strikerId, nonStrikerId];
       inn._usedBowlers = [];
       const innings = [...state.innings];
@@ -216,12 +205,23 @@ function reducer(state, action) {
       if (chased) {
         updatedInnings.status = "complete";
         phase = "result";
-      } else if (allOut || allOvers) {
+      } else if (allOvers) {
         updatedInnings.status = "complete";
-        if (state.activeInnings === 0) phase = "innings_break";
-        else phase = "result";
+        phase = state.activeInnings === 0 ? "innings_break" : "result";
       } else if (action.ball.wicket && !updatedInnings.striker) {
-        phase = "wicket_new_batter";
+        const dismissed = (updatedInnings.dismissedBatters || []).map(
+          (p) => p.id,
+        );
+        const nsId = updatedInnings.nonStriker?.id;
+        const remaining = state.teams[
+          updatedInnings._battingTeamIdx
+        ].players.filter((p) => !dismissed.includes(p.id) && p.id !== nsId);
+        if (remaining.length > 0) {
+          phase = "wicket_new_batter";
+        } else {
+          updatedInnings.status = "complete";
+          phase = state.activeInnings === 0 ? "innings_break" : "result";
+        }
       } else if (overEnded) {
         phase = "over_end";
       }
@@ -239,8 +239,7 @@ function reducer(state, action) {
       inn.striker = newBatter;
       inn._usedBatters = [...(inn._usedBatters || []), batterId];
       const innings = [...state.innings];
-      innings[state.activeInnings] = inn;
-      // check if over also ended
+      innings[state.activeInnings] = inn; // check if over also ended
       const phase = state.phase === "wicket_new_batter" ? "live" : state.phase;
       return { ...state, innings, phase };
     }
@@ -252,9 +251,8 @@ function reducer(state, action) {
 
       const freshBowler = deepClone(
         bowlingTeam.players.find((p) => p.id === bowlerId),
-      );
+      ); // FIX: name se match karo, bowlerId se nahi
 
-      // FIX: name se match karo, bowlerId se nahi
       const existingStats = inn.overHistory
         .filter((over) => over.bowler === freshBowler.name)
         .reduce(
@@ -403,7 +401,7 @@ export function MatchProvider({ children }) {
         reset,
       }}
     >
-      {children}
+            {children}   {" "}
     </MatchContext.Provider>
   );
 }
