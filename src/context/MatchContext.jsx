@@ -64,11 +64,18 @@ function applyDelivery(innings, ball) {
 
   if (ball.wicket) {
     s.wickets++;
-    if (s.striker) {
-      s.striker.batting.out = true;
-      s.striker.batting.dismissal = ball.wicket.type;
-      s.striker.batting.dismissedBy = ball.wicket.bowler || "";
-      s.striker.batting.fielder = ball.wicket.fielder || "";
+    const dismissedSlot =
+      ball.wicket.type === "Run Out" &&
+      ball.wicket.dismissedSlot === "nonStriker"
+        ? "nonStriker"
+        : "striker";
+    const dismissedBatter = s[dismissedSlot];
+
+    if (dismissedBatter) {
+      dismissedBatter.batting.out = true;
+      dismissedBatter.batting.dismissal = ball.wicket.type;
+      dismissedBatter.batting.dismissedBy = ball.wicket.bowler || "";
+      dismissedBatter.batting.fielder = ball.wicket.fielder || "";
     }
     if (
       bowler &&
@@ -89,14 +96,17 @@ function applyDelivery(innings, ball) {
     s.fallOfWickets.push({
       wicket: s.wickets,
       runs: s.runs,
-      batter: s.striker?.name || "",
+      batter: dismissedBatter?.name || "",
       over: s.balls,
     });
     s.currentPartnership = { runs: 0, balls: 0 };
 
     if (!s.dismissedBatters) s.dismissedBatters = [];
-    s.dismissedBatters.push({ ...s.striker }); // dismissed batter ko save karo
-    s.striker = null;
+    if (dismissedBatter) {
+      s.dismissedBatters.push({ ...dismissedBatter }); // dismissed batter ko save karo
+    }
+    s[dismissedSlot] = null;
+    s.pendingNewBatterSlot = dismissedSlot;
   } // odd runs => swap strike (except wide)
 
   if (ball.type !== "wide" && !ball.wicket) {
@@ -194,7 +204,6 @@ function reducer(state, action) {
         action.ball,
       );
       const allOvers = updatedInnings.balls >= updatedInnings.totalOvers * 6;
-      const allOut = updatedInnings.wickets >= 10;
       const chased =
         updatedInnings.target !== null &&
         updatedInnings.runs > updatedInnings.target;
@@ -210,27 +219,40 @@ function reducer(state, action) {
       } else if (allOvers) {
         updatedInnings.status = "complete";
         phase = state.activeInnings === 0 ? "innings_break" : "result";
-      } else if (action.ball.wicket && !updatedInnings.striker) {
+      } else if (action.ball.wicket && updatedInnings.pendingNewBatterSlot) {
         // AFTER — nonStriker bhi hai toh last player akela khelega, all out tab hi jab woh bhi out ho
         const dismissed = (updatedInnings.dismissedBatters || []).map(
           (p) => p.id,
         );
-        const nsId = updatedInnings.nonStriker?.id;
+        const activeIds = [
+          updatedInnings.striker?.id,
+          updatedInnings.nonStriker?.id,
+        ].filter(Boolean);
         const remaining = state.teams[
           updatedInnings._battingTeamIdx
-        ].players.filter((p) => !dismissed.includes(p.id) && p.id !== nsId);
+        ].players.filter(
+          (p) => !dismissed.includes(p.id) && !activeIds.includes(p.id),
+        );
 
         // Agar nonStriker hai aur koi new batter nahi → last pair, let last batter play alone
         // Agar nonStriker bhi nahi → truly all out
         if (remaining.length > 0) {
           phase = "wicket_new_batter";
-        } else if (updatedInnings.nonStriker !== null) {
+        } else if (
+          updatedInnings.striker === null &&
+          updatedInnings.nonStriker !== null
+        ) {
           // Last batter akela khelega — nonStriker ko striker banao, nonStriker = null
           updatedInnings.striker = updatedInnings.nonStriker;
           updatedInnings.nonStriker = null;
+          updatedInnings.pendingNewBatterSlot = null;
+          phase = "live";
+        } else if (updatedInnings.striker !== null) {
+          updatedInnings.pendingNewBatterSlot = null;
           phase = "live";
         } else {
           // Dono out — all out
+          updatedInnings.pendingNewBatterSlot = null;
           updatedInnings.status = "complete";
           phase = state.activeInnings === 0 ? "innings_break" : "result";
         }
@@ -248,7 +270,9 @@ function reducer(state, action) {
       const newBatter = deepClone(
         battingTeam.players.find((p) => p.id === batterId),
       );
-      inn.striker = newBatter;
+      const slot = inn.pendingNewBatterSlot || "striker";
+      inn[slot] = newBatter;
+      inn.pendingNewBatterSlot = null;
       inn._usedBatters = [...(inn._usedBatters || []), batterId];
       const innings = [...state.innings];
       innings[state.activeInnings] = inn; // check if over also ended

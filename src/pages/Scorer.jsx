@@ -7,10 +7,8 @@ import {
   getRunRate,
   getRequiredRate,
   getStrikeRate,
-  getBowlingEconomy,
   DISMISSAL_TYPES,
 } from "../utils/cricket";
-import { createInningsState } from "../utils/cricket";
 import ScoreCard from "../components/ScoreCard";
 import OverHistory from "../components/OverHistory";
 import "./Scorer.css";
@@ -26,19 +24,22 @@ function BallDot({ ball }) {
   );
 }
 
-function WicketModal({ onConfirm, onCancel, bowlerName, innings }) {
+function WicketModal({ onConfirm, onCancel, innings }) {
   const [dismissal, setDismissal] = useState("");
   const [runsBeforeWicket, setRunsBeforeWicket] = useState(0);
   const [fielder, setFielder] = useState("");
+  const [dismissedSlot, setDismissedSlot] = useState("");
 
-  const bowlingTeam = innings._bowlingTeamIdx;
+  const isRunOut = dismissal === "Run Out";
+  const canConfirm = dismissal && (!isRunOut || dismissedSlot);
 
   const confirm = () => {
-    if (!dismissal) return;
+    if (!canConfirm) return;
     onConfirm({
       type: dismissal,
       fielder,
       runsBeforeWicket: Number(runsBeforeWicket),
+      dismissedSlot: isRunOut ? dismissedSlot : "striker",
     });
   };
 
@@ -72,12 +73,42 @@ function WicketModal({ onConfirm, onCancel, bowlerName, innings }) {
           </div>
         )}
 
+        {isRunOut && (
+          <div className="modal-field">
+            <label className="modal-field-label">Who is out?</label>
+            <div className="runout-choice-grid">
+              {innings.striker && (
+                <button
+                  className={`runout-choice-btn${
+                    dismissedSlot === "striker" ? " active" : ""
+                  }`}
+                  onClick={() => setDismissedSlot("striker")}
+                >
+                  <span>{innings.striker.name}</span>
+                  <small>Striker</small>
+                </button>
+              )}
+              {innings.nonStriker && (
+                <button
+                  className={`runout-choice-btn${
+                    dismissedSlot === "nonStriker" ? " active" : ""
+                  }`}
+                  onClick={() => setDismissedSlot("nonStriker")}
+                >
+                  <span>{innings.nonStriker.name}</span>
+                  <small>Non-striker</small>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="modal-field">
           <label className="modal-field-label">
             Runs scored on this delivery
           </label>
           <div className="runs-btns">
-            {[0, 1, 2, 3, 4, 6].map((r) => (
+            {[0, 1, 2, 3].map((r) => (
               <button
                 key={r}
                 className={`runs-btn${runsBeforeWicket === r ? " active" : ""}`}
@@ -94,7 +125,7 @@ function WicketModal({ onConfirm, onCancel, bowlerName, innings }) {
             Cancel
           </button>
           <button
-            className={`modal-confirm${!dismissal ? " inactive" : ""}`}
+            className={`modal-confirm${!canConfirm ? " inactive" : ""}`}
             onClick={confirm}
           >
             Confirm Wicket
@@ -218,12 +249,22 @@ export default function Scorer() {
     deliver({ runs: 1, type, wicket: null });
   };
 
-  const handleWicketConfirm = ({ type, fielder, runsBeforeWicket }) => {
+  const handleWicketConfirm = ({
+    type,
+    fielder,
+    runsBeforeWicket,
+    dismissedSlot,
+  }) => {
     setShowWicket(false);
     deliver({
       runs: runsBeforeWicket,
       type: "normal",
-      wicket: { type, bowler: inn.currentBowler?.name || "", fielder },
+      wicket: {
+        type,
+        bowler: inn.currentBowler?.name || "",
+        fielder,
+        dismissedSlot,
+      },
     });
   };
 
@@ -250,7 +291,6 @@ export default function Scorer() {
       {showWicket && (
         <WicketModal
           innings={inn}
-          bowlerName={bowler?.name}
           onConfirm={handleWicketConfirm}
           onCancel={() => setShowWicket(false)}
         />

@@ -618,6 +618,51 @@
   color: #fff;
 }
 
+.runout-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.runout-choice-btn {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #1e2b20;
+  background: #0d1610;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.12s;
+  text-align: left;
+  min-width: 0;
+}
+
+.runout-choice-btn span,
+.runout-choice-btn small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.runout-choice-btn span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.runout-choice-btn small {
+  color: #dadada;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.runout-choice-btn:hover,
+.runout-choice-btn.active {
+  border-color: #f87171;
+  color: #f87171;
+}
+
+.runout-choice-btn.active {
+  background: rgba(248, 113, 113, 0.12);
+}
+
 .modal-actions {
   display: flex;
   gap: 8px;
