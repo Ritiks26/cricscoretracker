@@ -246,10 +246,10 @@ function reducer(state, action) {
           updatedInnings.striker = updatedInnings.nonStriker;
           updatedInnings.nonStriker = null;
           updatedInnings.pendingNewBatterSlot = null;
-          phase = "live";
+          phase = overEnded ? "over_end" : "live";
         } else if (updatedInnings.striker !== null) {
           updatedInnings.pendingNewBatterSlot = null;
-          phase = "live";
+          phase = overEnded ? "over_end" : "live";
         } else {
           // Dono out — all out
           updatedInnings.pendingNewBatterSlot = null;
@@ -276,7 +276,12 @@ function reducer(state, action) {
       inn._usedBatters = [...(inn._usedBatters || []), batterId];
       const innings = [...state.innings];
       innings[state.activeInnings] = inn; // check if over also ended
-      const phase = state.phase === "wicket_new_batter" ? "live" : state.phase;
+      const phase =
+        state.phase === "wicket_new_batter"
+          ? inn.currentBowler === null
+            ? "over_end"
+            : "live"
+          : state.phase;
       return { ...state, innings, phase };
     }
 

@@ -108,7 +108,7 @@ function WicketModal({ onConfirm, onCancel, innings }) {
             Runs scored on this delivery
           </label>
           <div className="runs-btns">
-            {[0, 1, 2, 3].map((r) => (
+            {[0, 1, 2, 3, 4, 6].map((r) => (
               <button
                 key={r}
                 className={`runs-btn${runsBeforeWicket === r ? " active" : ""}`}
