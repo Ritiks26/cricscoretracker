@@ -196,6 +196,16 @@ function reducer(state, action) {
       return { ...state, innings, phase: "live" };
     }
 
+    case "SWAP_STRIKE": {
+      const inn = deepClone(state.innings[state.activeInnings]);
+      if (!inn?.striker || !inn?.nonStriker) return state;
+
+      [inn.striker, inn.nonStriker] = [inn.nonStriker, inn.striker];
+      const innings = [...state.innings];
+      innings[state.activeInnings] = inn;
+      return { ...state, innings };
+    }
+
     case "DELIVER": {
       const prev = deepClone(state.innings[state.activeInnings]);
       const undoStack = [...state.undoStack, prev].slice(-20);
@@ -421,6 +431,7 @@ export function MatchProvider({ children }) {
     () => dispatch({ type: "START_SECOND_INNINGS" }),
     [],
   );
+  const swapStrike = useCallback(() => dispatch({ type: "SWAP_STRIKE" }), []);
   const undo = useCallback(() => dispatch({ type: "UNDO" }), []);
   const reset = useCallback(() => dispatch({ type: "RESET" }), []);
 
@@ -438,6 +449,7 @@ export function MatchProvider({ children }) {
         setNewBatter,
         setNewBowler,
         startSecondInnings,
+        swapStrike,
         undo,
         reset,
       }}

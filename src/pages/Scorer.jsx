@@ -108,7 +108,7 @@ function WicketModal({ onConfirm, onCancel, innings }) {
             Runs scored on this delivery
           </label>
           <div className="runs-btns">
-            {[0, 1, 2, 3, 4, 6].map((r) => (
+            {[0, 1, 2, 3].map((r) => (
               <button
                 key={r}
                 className={`runs-btn${runsBeforeWicket === r ? " active" : ""}`}
@@ -217,6 +217,7 @@ export default function Scorer() {
     deliver,
     setNewBatter,
     setNewBowler,
+    swapStrike,
     undo,
     reset,
   } = useMatch();
@@ -442,6 +443,14 @@ export default function Scorer() {
               </button>
             ))}
           </div>
+
+          <button
+            className="swap-strike-btn"
+            onClick={swapStrike}
+            disabled={!nonStriker}
+          >
+            Swap Strike
+          </button>
 
           <div className="action-section-label">Extras</div>
           <div className="extra-btns">
