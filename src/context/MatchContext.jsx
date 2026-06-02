@@ -8,6 +8,8 @@ import {
 import { createInningsState, isLegalDelivery } from "../utils/cricket";
 
 const MatchContext = createContext(null);
+const MATCH_STORAGE_KEY = "cricket_match";
+const SAVED_SETUP_KEY = "cricket_last_setup";
 
 const initialState = {
   phase: "setup", // setup | toss | select_openers | select_bowler | live | over_end | wicket_new_batter | innings_break | result
@@ -216,7 +218,7 @@ function reducer(state, action) {
       const allOvers = updatedInnings.balls >= updatedInnings.totalOvers * 6;
       const chased =
         updatedInnings.target !== null &&
-        updatedInnings.runs > updatedInnings.target;
+        updatedInnings.runs >= updatedInnings.target;
 
       let phase = state.phase;
       let modal = state.modal;
@@ -376,7 +378,10 @@ function reducer(state, action) {
     }
 
     case "RESET":
-      localStorage.removeItem("cricket_match");
+      localStorage.removeItem(MATCH_STORAGE_KEY);
+      if (!action.keepSquad) {
+        localStorage.removeItem(SAVED_SETUP_KEY);
+      }
       return { ...initialState };
   }
 }
@@ -384,7 +389,7 @@ function reducer(state, action) {
 export function MatchProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState, () => {
     try {
-      const saved = localStorage.getItem("cricket_match");
+      const saved = localStorage.getItem(MATCH_STORAGE_KEY);
       return saved ? JSON.parse(saved) : initialState;
     } catch {
       return initialState;
@@ -393,8 +398,10 @@ export function MatchProvider({ children }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("cricket_match", JSON.stringify(state));
-    } catch {}
+      localStorage.setItem(MATCH_STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // localStorage can be unavailable in private or restricted contexts.
+    }
   }, [state]);
 
   const deliver = useCallback(
@@ -433,7 +440,11 @@ export function MatchProvider({ children }) {
   );
   const swapStrike = useCallback(() => dispatch({ type: "SWAP_STRIKE" }), []);
   const undo = useCallback(() => dispatch({ type: "UNDO" }), []);
-  const reset = useCallback(() => dispatch({ type: "RESET" }), []);
+  const reset = useCallback(
+    (options = {}) =>
+      dispatch({ type: "RESET", keepSquad: Boolean(options.keepSquad) }),
+    [],
+  );
 
   const currentInnings = state.innings[state.activeInnings];
 

@@ -3,6 +3,8 @@ import { useMatch } from "../context/MatchContext";
 import { createPlayer, createTeam } from "../utils/cricket";
 import "./Setup.css";
 
+const SAVED_SETUP_KEY = "cricket_last_setup";
+
 const DEFAULT_TEAM1 = [
   // "Rohit Sharma",
   // "Shubman Gill",
@@ -29,6 +31,47 @@ const DEFAULT_TEAM2 = [
   // "Josh Hazlewood",
   // "Adam Zampa",
 ];
+
+const DEFAULT_SETUP = {
+  team1Name: "TEAM THUNDER",
+  team2Name: "TEAM CRUSHER",
+  team1Players: [...DEFAULT_TEAM1],
+  team2Players: [...DEFAULT_TEAM2],
+  totalOvers: 20,
+  playersPerTeam: 11,
+};
+
+function getInitialSetup() {
+  try {
+    const saved = localStorage.getItem(SAVED_SETUP_KEY);
+    if (!saved) return DEFAULT_SETUP;
+
+    const parsed = JSON.parse(saved);
+    return {
+      team1Name: parsed.team1Name || DEFAULT_SETUP.team1Name,
+      team2Name: parsed.team2Name || DEFAULT_SETUP.team2Name,
+      team1Players: Array.isArray(parsed.team1Players)
+        ? parsed.team1Players
+        : DEFAULT_SETUP.team1Players,
+      team2Players: Array.isArray(parsed.team2Players)
+        ? parsed.team2Players
+        : DEFAULT_SETUP.team2Players,
+      totalOvers: Number(parsed.totalOvers) || DEFAULT_SETUP.totalOvers,
+      playersPerTeam:
+        Number(parsed.playersPerTeam) || DEFAULT_SETUP.playersPerTeam,
+    };
+  } catch {
+    return DEFAULT_SETUP;
+  }
+}
+
+function saveReusableSetup(setup) {
+  try {
+    localStorage.setItem(SAVED_SETUP_KEY, JSON.stringify(setup));
+  } catch {
+    // localStorage can be unavailable in private or restricted contexts.
+  }
+}
 
 function PlayerInput({ players, onChange, count }) {
   const rows = Array.from({ length: count }, (_, i) => players[i] || "");
@@ -58,12 +101,19 @@ function PlayerInput({ players, onChange, count }) {
 
 export default function Setup() {
   const { setTeams } = useMatch();
-  const [team1Name, setTeam1Name] = useState("TEAM THUNDER");
-  const [team2Name, setTeam2Name] = useState("TEAM CRUSHER");
-  const [team1Players, setTeam1Players] = useState([...DEFAULT_TEAM1]);
-  const [team2Players, setTeam2Players] = useState([...DEFAULT_TEAM2]);
-  const [totalOvers, setTotalOvers] = useState(20);
-  const [playersPerTeam, setPlayersPerTeam] = useState(11);
+  const [initialSetup] = useState(getInitialSetup);
+  const [team1Name, setTeam1Name] = useState(initialSetup.team1Name);
+  const [team2Name, setTeam2Name] = useState(initialSetup.team2Name);
+  const [team1Players, setTeam1Players] = useState([
+    ...initialSetup.team1Players,
+  ]);
+  const [team2Players, setTeam2Players] = useState([
+    ...initialSetup.team2Players,
+  ]);
+  const [totalOvers, setTotalOvers] = useState(initialSetup.totalOvers);
+  const [playersPerTeam, setPlayersPerTeam] = useState(
+    initialSetup.playersPerTeam,
+  );
   const [activeTab, setActiveTab] = useState(0);
   const [errors, setErrors] = useState([]);
 
@@ -88,6 +138,18 @@ export default function Setup() {
       team2Name.trim(),
       team2Players.slice(0, playersPerTeam).map((n) => createPlayer(n.trim())),
     );
+    saveReusableSetup({
+      team1Name: team1Name.trim(),
+      team2Name: team2Name.trim(),
+      team1Players: team1Players
+        .slice(0, playersPerTeam)
+        .map((n) => n.trim()),
+      team2Players: team2Players
+        .slice(0, playersPerTeam)
+        .map((n) => n.trim()),
+      playersPerTeam,
+      totalOvers,
+    });
     setTeams([t1, t2], totalOvers);
   };
 

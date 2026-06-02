@@ -13,6 +13,16 @@ import ScoreCard from "../components/ScoreCard";
 import OverHistory from "../components/OverHistory";
 import "./Scorer.css";
 
+const SAVED_SETUP_KEY = "cricket_last_setup";
+
+function hasSavedSetup() {
+  try {
+    return Boolean(localStorage.getItem(SAVED_SETUP_KEY));
+  } catch {
+    return false;
+  }
+}
+
 function BallDot({ ball }) {
   return (
     <div
@@ -277,6 +287,14 @@ export default function Scorer() {
     setNewBowler(id);
   };
 
+  const handleEndMatch = () => {
+    if (!window.confirm("End match and reset?")) return;
+    const keepSquad = hasSavedSetup()
+      ? window.confirm("Keep old squad?")
+      : false;
+    reset({ keepSquad });
+  };
+
   const progressPct = Math.min((ballsDone / totalBalls) * 100, 100);
 
   const isOverEnd = state.phase === "over_end";
@@ -534,9 +552,7 @@ export default function Scorer() {
       <div className="bottom-bar">
         <button
           className="reset-btn"
-          onClick={() => {
-            if (window.confirm("End match and reset?")) reset();
-          }}
+          onClick={handleEndMatch}
         >
           End Match
         </button>

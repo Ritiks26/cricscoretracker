@@ -2,6 +2,16 @@ import { useMatch } from '../context/MatchContext';
 import { getOversStr, getStrikeRate, getBowlingEconomy } from '../utils/cricket';
 import './Result.css';
 
+const SAVED_SETUP_KEY = 'cricket_last_setup';
+
+function hasSavedSetup() {
+  try {
+    return Boolean(localStorage.getItem(SAVED_SETUP_KEY));
+  } catch {
+    return false;
+  }
+}
+
 export default function Result() {
   const { state, startSecondInnings, reset } = useMatch();
   const inn0 = state.innings[0];
@@ -24,6 +34,14 @@ export default function Result() {
       resultText = 'Match Tied!';
     }
   }
+
+  const handleNewMatch = () => {
+    if (!window.confirm('Start a new match?')) return;
+    const keepSquad = hasSavedSetup()
+      ? window.confirm('Keep old squad?')
+      : false;
+    reset({ keepSquad });
+  };
 
   return (
     <div className="result-page">
@@ -71,7 +89,7 @@ export default function Result() {
             Start 2nd Innings →
           </button>
         )}
-        <button className="reset-btn" style={{ width: '100%', marginTop: 8, padding: '12px' }} onClick={() => { if (window.confirm('Start a new match?')) reset(); }}>
+        <button className="reset-btn" style={{ width: '100%', marginTop: 8, padding: '12px' }} onClick={handleNewMatch}>
           New Match
         </button>
       </div>
