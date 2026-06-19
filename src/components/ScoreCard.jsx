@@ -5,7 +5,7 @@ import {
 } from "../utils/cricket";
 import "./ScoreCard.css";
 
-function BattingCard({ inn, battingTeam }) {
+function BattingCard({ inn }) {
   const striker = inn.striker;
   const nonStriker = inn.nonStriker;
   const rows = [];
@@ -20,6 +20,10 @@ function BattingCard({ inn, battingTeam }) {
   // dismissed batters — inn.dismissedBatters se aate hain (stats safe hain)
   (inn.dismissedBatters || []).forEach((p) => {
     rows.push({ player: p, status: "out" });
+  });
+
+  (inn.retiredBatters || []).forEach((p) => {
+    rows.push({ player: p, status: "retired" });
   });
 
   const extras = inn.extras;
@@ -67,6 +71,9 @@ function BattingCard({ inn, battingTeam }) {
                     {isStriker ? "★ batting" : "not out"}
                   </div>
                 )}
+                {status === "retired" && (
+                  <div className="sc-dismissal">retired</div>
+                )}
               </td>
               <td className="sc-td bold">{player.batting.runs}</td>
               <td className="sc-td">{player.batting.balls}</td>
@@ -106,7 +113,7 @@ function BattingCard({ inn, battingTeam }) {
   );
 }
 
-function BowlingCard({ inn, bowlingTeam }) {
+function BowlingCard({ inn }) {
   // Collect all bowlers who have bowled - from over history + current
   const bowlerMap = {};
 
@@ -212,11 +219,11 @@ function BowlingCard({ inn, bowlingTeam }) {
   );
 }
 
-export default function ScoreCard({ inn, battingTeam, bowlingTeam }) {
+export default function ScoreCard({ inn }) {
   return (
     <div className="scorecard">
-      <BattingCard inn={inn} battingTeam={battingTeam} />
-      <BowlingCard inn={inn} bowlingTeam={bowlingTeam} />
+      <BattingCard inn={inn} />
+      <BowlingCard inn={inn} />
 
       {/* Partnership */}
       <div className="scorecard-section">

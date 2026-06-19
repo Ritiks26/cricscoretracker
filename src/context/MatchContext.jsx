@@ -26,6 +26,18 @@ function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
+function getAvailableBatterIds(innings, battingTeam, excludedIds = []) {
+  const outIds = (innings.dismissedBatters || []).map((p) => p.id);
+  const activeIds = [innings.striker?.id, innings.nonStriker?.id].filter(
+    Boolean,
+  );
+  const blockedIds = new Set([...outIds, ...activeIds, ...excludedIds]);
+
+  return battingTeam.players
+    .filter((p) => !blockedIds.has(p.id))
+    .map((p) => p.id);
+}
+
 function applyDelivery(innings, ball) {
   const s = deepClone(innings);
   const isLegal = isLegalDelivery(ball);
@@ -279,13 +291,24 @@ function reducer(state, action) {
       const { batterId } = action;
       const inn = deepClone(state.innings[state.activeInnings]);
       const battingTeam = state.teams[inn._battingTeamIdx];
-      const newBatter = deepClone(
-        battingTeam.players.find((p) => p.id === batterId),
+      const retiredIndex = (inn.retiredBatters || []).findIndex(
+        (p) => p.id === batterId,
       );
+      const newBatter =
+        retiredIndex >= 0
+          ? deepClone(inn.retiredBatters[retiredIndex])
+          : deepClone(battingTeam.players.find((p) => p.id === batterId));
+      if (retiredIndex >= 0) {
+        inn.retiredBatters = inn.retiredBatters.filter(
+          (p) => p.id !== batterId,
+        );
+      }
       const slot = inn.pendingNewBatterSlot || "striker";
       inn[slot] = newBatter;
       inn.pendingNewBatterSlot = null;
-      inn._usedBatters = [...(inn._usedBatters || []), batterId];
+      inn._usedBatters = Array.from(
+        new Set([...(inn._usedBatters || []), batterId]),
+      );
       const innings = [...state.innings];
       innings[state.activeInnings] = inn; // check if over also ended
       const phase =
@@ -295,6 +318,50 @@ function reducer(state, action) {
             : "live"
           : state.phase;
       return { ...state, innings, phase };
+    }
+
+    case "RETIRE_BATTER": {
+      const { slot, replacementId } = action;
+      const prev = deepClone(state.innings[state.activeInnings]);
+      const undoStack = [...state.undoStack, prev].slice(-20);
+      const inn = deepClone(state.innings[state.activeInnings]);
+      const battingTeam = state.teams[inn._battingTeamIdx];
+      const retiringBatter = inn[slot];
+
+      if (!retiringBatter || !replacementId) return state;
+
+      const availableIds = getAvailableBatterIds(inn, battingTeam, [
+        retiringBatter.id,
+      ]);
+      if (!availableIds.includes(replacementId)) return state;
+
+      const retiredIndex = (inn.retiredBatters || []).findIndex(
+        (p) => p.id === replacementId,
+      );
+      const replacement =
+        retiredIndex >= 0
+          ? deepClone(inn.retiredBatters[retiredIndex])
+          : deepClone(battingTeam.players.find((p) => p.id === replacementId));
+
+      inn.retiredBatters = (inn.retiredBatters || []).filter(
+        (p) => p.id !== retiringBatter.id && p.id !== replacementId,
+      );
+      inn.retiredBatters.push({
+        ...retiringBatter,
+        batting: {
+          ...retiringBatter.batting,
+          retired: true,
+        },
+      });
+      inn[slot] = replacement;
+      inn.currentPartnership = { runs: 0, balls: 0 };
+      inn._usedBatters = Array.from(
+        new Set([...(inn._usedBatters || []), replacementId]),
+      );
+
+      const innings = [...state.innings];
+      innings[state.activeInnings] = inn;
+      return { ...state, innings, undoStack, phase: "live" };
     }
 
     case "SET_NEW_BOWLER": {
@@ -430,6 +497,11 @@ export function MatchProvider({ children }) {
     (id) => dispatch({ type: "SET_NEW_BATTER", batterId: id }),
     [],
   );
+  const retireBatter = useCallback(
+    (slot, replacementId) =>
+      dispatch({ type: "RETIRE_BATTER", slot, replacementId }),
+    [],
+  );
   const setNewBowler = useCallback(
     (id) => dispatch({ type: "SET_NEW_BOWLER", bowlerId: id }),
     [],
@@ -458,6 +530,7 @@ export function MatchProvider({ children }) {
         setToss,
         setOpeners,
         setNewBatter,
+        retireBatter,
         setNewBowler,
         startSecondInnings,
         swapStrike,
@@ -465,7 +538,7 @@ export function MatchProvider({ children }) {
         reset,
       }}
     >
-            {children}   {" "}
+      {children}
     </MatchContext.Provider>
   );
 }

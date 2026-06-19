@@ -146,9 +146,24 @@ function WicketModal({ onConfirm, onCancel, innings }) {
   );
 }
 
-function NewBatterModal({ team, usedIds, onConfirm }) {
+function getAvailableBatters(team, innings, excludedIds = []) {
+  const dismissedIds = (innings.dismissedBatters || []).map((p) => p.id);
+  const activeIds = [innings.striker?.id, innings.nonStriker?.id].filter(
+    Boolean,
+  );
+  const blockedIds = new Set([...dismissedIds, ...activeIds, ...excludedIds]);
+  const retiredById = new Map(
+    (innings.retiredBatters || []).map((p) => [p.id, p]),
+  );
+
+  return team.players
+    .filter((p) => !blockedIds.has(p.id))
+    .map((p) => retiredById.get(p.id) || p);
+}
+
+function NewBatterModal({ team, innings, onConfirm }) {
   const [selected, setSelected] = useState(null);
-  const available = team.players.filter((p) => !usedIds.includes(p.id));
+  const available = getAvailableBatters(team, innings);
 
   return (
     <div className="modal-overlay">
@@ -163,7 +178,12 @@ function NewBatterModal({ team, usedIds, onConfirm }) {
               className={`player-pick-btn${selected === p.id ? " active" : ""}`}
               onClick={() => setSelected(p.id)}
             >
-              {p.name}
+              <span>{p.name}</span>
+              {(innings.retiredBatters || []).some((r) => r.id === p.id) && (
+                <span className="retired-pick-stat">
+                  retired {p.batting.runs}({p.batting.balls})
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -174,6 +194,90 @@ function NewBatterModal({ team, usedIds, onConfirm }) {
         >
           Send to Crease →
         </button>
+      </div>
+    </div>
+  );
+}
+
+function RetireModal({ innings, team, onConfirm, onCancel }) {
+  const [slot, setSlot] = useState("");
+  const [replacementId, setReplacementId] = useState(null);
+  const retiringBatter = slot ? innings[slot] : null;
+  const available = retiringBatter
+    ? getAvailableBatters(team, innings, [retiringBatter.id])
+    : [];
+  const canConfirm = slot && replacementId;
+
+  const chooseSlot = (nextSlot) => {
+    setSlot(nextSlot);
+    setReplacementId(null);
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-box">
+        <h3 className="modal-title">Retired</h3>
+        <p className="modal-sub">Select batter to retire</p>
+
+        <div className="runout-choice-grid">
+          {innings.striker && (
+            <button
+              className={`runout-choice-btn${slot === "striker" ? " active" : ""}`}
+              onClick={() => chooseSlot("striker")}
+            >
+              <span>{innings.striker.name}</span>
+              <small>Striker</small>
+            </button>
+          )}
+          {innings.nonStriker && (
+            <button
+              className={`runout-choice-btn${slot === "nonStriker" ? " active" : ""}`}
+              onClick={() => chooseSlot("nonStriker")}
+            >
+              <span>{innings.nonStriker.name}</span>
+              <small>Non-striker</small>
+            </button>
+          )}
+        </div>
+
+        {slot && (
+          <div className="modal-field retire-replacement-field">
+            <label className="modal-field-label">New batter</label>
+            <div className="player-pick-list">
+              {available.length === 0 && (
+                <div className="no-players">No eligible batter available.</div>
+              )}
+              {available.map((p) => (
+                <button
+                  key={p.id}
+                  className={`player-pick-btn${
+                    replacementId === p.id ? " active" : ""
+                  }`}
+                  onClick={() => setReplacementId(p.id)}
+                >
+                  <span>{p.name}</span>
+                  {(innings.retiredBatters || []).some((r) => r.id === p.id) && (
+                    <span className="retired-pick-stat">
+                      retired {p.batting.runs}({p.batting.balls})
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="modal-actions">
+          <button className="modal-cancel" onClick={onCancel}>
+            Cancel
+          </button>
+          <button
+            className={`modal-confirm${!canConfirm ? " inactive" : ""}`}
+            onClick={() => canConfirm && onConfirm(slot, replacementId)}
+          >
+            Confirm Retired
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -226,19 +330,20 @@ export default function Scorer() {
     currentInnings: inn,
     deliver,
     setNewBatter,
+    retireBatter,
     setNewBowler,
     swapStrike,
     undo,
     reset,
   } = useMatch();
   const [showWicket, setShowWicket] = useState(false);
+  const [showRetire, setShowRetire] = useState(false);
   const [activeTab, setActiveTab] = useState("score");
 
   if (!inn) return null;
 
   const battingTeam = state.teams[inn._battingTeamIdx];
   const bowlingTeam = state.teams[inn._bowlingTeamIdx];
-  const usedBatterIds = inn._usedBatters || [];
   const lastBowlerId =
     inn.overHistory.length > 0
       ? inn.overHistory[inn.overHistory.length - 1]?.bowlerId
@@ -287,6 +392,11 @@ export default function Scorer() {
     setNewBowler(id);
   };
 
+  const handleRetireConfirm = (slot, replacementId) => {
+    setShowRetire(false);
+    retireBatter(slot, replacementId);
+  };
+
   const handleEndMatch = () => {
     if (!window.confirm("End match and reset?")) return;
     const keepSquad = hasSavedSetup()
@@ -318,8 +428,17 @@ export default function Scorer() {
       {isWicketNewBatter && (
         <NewBatterModal
           team={battingTeam}
-          usedIds={usedBatterIds}
+          innings={inn}
           onConfirm={handleNewBatter}
+        />
+      )}
+
+      {showRetire && (
+        <RetireModal
+          innings={inn}
+          team={battingTeam}
+          onConfirm={handleRetireConfirm}
+          onCancel={() => setShowRetire(false)}
         />
       )}
 
@@ -470,6 +589,14 @@ export default function Scorer() {
             Swap Strike
           </button>
 
+          <button
+            className="retire-btn"
+            onClick={() => setShowRetire(true)}
+            disabled={!striker && !nonStriker}
+          >
+            Retired
+          </button>
+
           <div className="action-section-label">Extras</div>
           <div className="extra-btns">
             <button
@@ -541,11 +668,7 @@ export default function Scorer() {
       )}
 
       {activeTab === "card" && (
-        <ScoreCard
-          inn={inn}
-          battingTeam={battingTeam}
-          bowlingTeam={bowlingTeam}
-        />
+        <ScoreCard inn={inn} />
       )}
       {activeTab === "history" && <OverHistory inn={inn} />}
 

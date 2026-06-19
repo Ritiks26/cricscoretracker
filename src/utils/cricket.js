@@ -67,6 +67,7 @@ export function createInningsState(
     fallOfWickets: [],
     currentPartnership: { runs: 0, balls: 0 },
     pendingNewBatterSlot: null,
+    retiredBatters: [],
     status: "live",
     isNoBallActive: false,
   };

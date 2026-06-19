@@ -401,6 +401,34 @@
   cursor: not-allowed;
 }
 
+.retire-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 11px 12px;
+  border-radius: 6px;
+  border: 1px solid #1a2b4a;
+  background: #fff;
+  color: #1a2b4a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: "satoshi", monospace;
+}
+
+.retire-btn:hover:not(:disabled) {
+  background: #1a2b4a;
+  color: #fff;
+}
+
+.retire-btn:disabled {
+  border-color: #dadada;
+  color: #999;
+  cursor: not-allowed;
+}
+
 /* Extra buttons */
 .extra-btns {
   display: grid;
@@ -758,6 +786,18 @@
   font-size: 11px;
   color: #fff;
   font-family: "satoshi", monospace;
+}
+
+.retired-pick-stat {
+  font-size: 11px;
+  color: #fff;
+  font-family: "satoshi", monospace;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.retire-replacement-field {
+  margin-top: 14px;
 }
 
 .no-players {
